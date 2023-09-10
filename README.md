@@ -37,5 +37,8 @@ Test00.jpg,Test01.jpg,Test02.jpg ,,,,Test12.jpg<br><br>
   </li>
 </ul>
 
+<b>ダウンロードはこちらから<br>
+https://github.com/TaichiIwamoto/AutoSaveImageSerial/releases/tag/v1.0.0
+
 
 
