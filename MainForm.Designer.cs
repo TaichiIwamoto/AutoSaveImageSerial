@@ -38,6 +38,8 @@
             this.ResetSaveNum = new System.Windows.Forms.Button();
             this.SaveImageText = new System.Windows.Forms.TextBox();
             this.LogResetButton = new System.Windows.Forms.Button();
+            this.ModeSelectComboBox = new System.Windows.Forms.ComboBox();
+            this.ModeSelectLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // SaveDirText
@@ -79,12 +81,13 @@
             // 
             // SelectSiteDropDown
             // 
+            this.SelectSiteDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.SelectSiteDropDown.FormattingEnabled = true;
             this.SelectSiteDropDown.Items.AddRange(new object[] {
             "Pixiv",
             "Fantia",
             "その他"});
-            this.SelectSiteDropDown.Location = new System.Drawing.Point(605, 41);
+            this.SelectSiteDropDown.Location = new System.Drawing.Point(605, 37);
             this.SelectSiteDropDown.Name = "SelectSiteDropDown";
             this.SelectSiteDropDown.Size = new System.Drawing.Size(87, 20);
             this.SelectSiteDropDown.TabIndex = 6;
@@ -121,11 +124,11 @@
             // SaveImageText
             // 
             this.SaveImageText.AllowDrop = true;
-            this.SaveImageText.Location = new System.Drawing.Point(13, 80);
+            this.SaveImageText.Location = new System.Drawing.Point(13, 89);
             this.SaveImageText.Multiline = true;
             this.SaveImageText.Name = "SaveImageText";
             this.SaveImageText.ReadOnly = true;
-            this.SaveImageText.Size = new System.Drawing.Size(679, 349);
+            this.SaveImageText.Size = new System.Drawing.Size(679, 340);
             this.SaveImageText.TabIndex = 10;
             this.SaveImageText.TextChanged += new System.EventHandler(this.SaveImageText_TextChanged);
             this.SaveImageText.DragDrop += new System.Windows.Forms.DragEventHandler(this.SaveImageText_DragDrop);
@@ -141,6 +144,28 @@
             this.LogResetButton.UseVisualStyleBackColor = true;
             this.LogResetButton.Click += new System.EventHandler(this.LogResetButton_Click);
             // 
+            // ModeSelectComboBox
+            // 
+            this.ModeSelectComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ModeSelectComboBox.FormattingEnabled = true;
+            this.ModeSelectComboBox.Items.AddRange(new object[] {
+            "ダウンロード",
+            "キャプチャ"});
+            this.ModeSelectComboBox.Location = new System.Drawing.Point(13, 63);
+            this.ModeSelectComboBox.Name = "ModeSelectComboBox";
+            this.ModeSelectComboBox.Size = new System.Drawing.Size(87, 20);
+            this.ModeSelectComboBox.TabIndex = 12;
+            this.ModeSelectComboBox.SelectedIndexChanged += new System.EventHandler(this.ModeSelectComboBox_SelectedIndexChanged);
+            // 
+            // ModeSelectLabel
+            // 
+            this.ModeSelectLabel.AutoSize = true;
+            this.ModeSelectLabel.Location = new System.Drawing.Point(106, 66);
+            this.ModeSelectLabel.Name = "ModeSelectLabel";
+            this.ModeSelectLabel.Size = new System.Drawing.Size(57, 12);
+            this.ModeSelectLabel.TabIndex = 13;
+            this.ModeSelectLabel.Text = "モード選択";
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -148,6 +173,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(704, 441);
+            this.Controls.Add(this.ModeSelectLabel);
+            this.Controls.Add(this.ModeSelectComboBox);
             this.Controls.Add(this.LogResetButton);
             this.Controls.Add(this.SaveImageText);
             this.Controls.Add(this.ResetSaveNum);
@@ -163,6 +190,7 @@
             this.Name = "MainForm";
             this.Text = "画像連番保存ツール";
             this.TopMost = true;
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -180,6 +208,8 @@
         private System.Windows.Forms.Button ResetSaveNum;
         private System.Windows.Forms.TextBox SaveImageText;
         private System.Windows.Forms.Button LogResetButton;
+        private System.Windows.Forms.ComboBox ModeSelectComboBox;
+        private System.Windows.Forms.Label ModeSelectLabel;
     }
 }
 

@@ -20,18 +20,26 @@ namespace AutoSaveImageSerial
         private string accept;
         private string saveDirPass;
         private int saveNum = 0;
+        private string[] uriCache = new string[2];
         public List<string> log = new List<string>();
 
         public MainForm()
         {
             InitializeComponent();
+            this.ModeSelectComboBox.Text = this.ModeSelectComboBox.Items[0].ToString();//モード選択初期化=ダウンロード
+            this.SelectSiteDropDown.Text = this.SelectSiteDropDown.Items[2].ToString();//サイト選択初期化=その他
         }
 
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
         private void SaveDirText_TextChanged(object sender, EventArgs e)
         {
 
         }
 
+        //ディレクトリ選択
         private void SaveDirButton_Click(object sender, EventArgs e)
         {
             saveDirPass = Directory.getSaveDirectory();
@@ -42,6 +50,7 @@ namespace AutoSaveImageSerial
         {
         }
 
+        //サイト選択
         private void SelectSiteDropDown_SelectedIndexChanged(object sender, EventArgs e)
         {
             int selectNum = this.SelectSiteDropDown.SelectedIndex;
@@ -69,6 +78,7 @@ namespace AutoSaveImageSerial
 
         }
 
+        //連番決定処理
         private void SaveNumberText_TextChanged(object sender, EventArgs e)
         {
             string tmpNum = "";
@@ -83,6 +93,7 @@ namespace AutoSaveImageSerial
             SaveNumberText.Text = tmpNum;
         }
 
+        //連番リセット
         private void ResetSaveNum_Click(object sender, EventArgs e)
         {
             saveNum = 0;
@@ -94,44 +105,95 @@ namespace AutoSaveImageSerial
         {
         }
 
+        //画像保存
         private async void SaveImageText_DragDrop(object sender, DragEventArgs e)
         {
-            bool nullError = false;
-            string uri = e.Data.GetData(DataFormats.Text).ToString();
-            Console.WriteLine(uri);
-            Console.WriteLine(saveDirPass);
-            string saveTitle = SaveTitleText.Text + SaveNumberText.Text;
-            if (saveDirPass == null)
+            bool nullError = false; //保存先dir又はタイトル未入力かどうか
+            string uri = e.Data.GetData(DataFormats.Text).ToString();//画像のURI
+            string saveTitle = SaveTitleText.Text + SaveNumberText.Text;//保存タイトル(連番付き)
+            //重複判定
             {
-                DisplayLog.displayTextLog(this.SaveImageText, "保存先を選択してください", log);
-                nullError = true;
+                if (saveNum == 0)
+                {
+                    uriCache[0] = uri;
+                }
+                else if (saveNum == 1)
+                {
+                    uriCache[1] = uri;
+                    if (uriCache[0] == uriCache[1])
+                    {
+
+                        DialogResult result = MessageBox.Show(this, "前回保存した画像と同じですが続行しますか?", "重複通知", MessageBoxButtons.YesNo);
+                        if (result == DialogResult.No)
+                        {
+                            return;
+                        }
+                    }
+
+                }
+                else
+                {
+                    uriCache[0] = uriCache[1];
+                    uriCache[1] = uri;
+                    if (uriCache[0] == uriCache[1])
+                    {
+
+                        DialogResult result = MessageBox.Show(this, "前回保存した画像と同じですが続行しますか?", "重複通知", MessageBoxButtons.YesNo);
+                        if (result == DialogResult.No)
+                        {
+                            return;
+                        }
+                    }
+                }
             }
-            if (SaveTitleText.Text == "")
+            ////
+            //画像保存
             {
-                DisplayLog.displayTextLog(this.SaveImageText, "タイトルを入力してください.", log);
-                nullError = true;
+                if (saveDirPass == null)
+                {
+                    DisplayLog.displayTextLog(this.SaveImageText, "保存先を選択してください", log);
+                    nullError = true;
+                }
+                if (SaveTitleText.Text == "")
+                {
+                    DisplayLog.displayTextLog(this.SaveImageText, "タイトルを入力してください.", log);
+                    nullError = true;
+                }
+                if (nullError == true)
+                {
+                    return;
+                }
+                await SaveImage.saveImage(uri, saveDirPass, saveTitle, referer, accept, this.SaveImageText, log);
+                saveNum += 1;
+                this.SaveNumberText_TextChanged(sender, e);
             }
-            if (nullError == true)
-            {
-                return;
-            }
-            await SaveImage.saveImage(uri, saveDirPass, saveTitle, referer, accept,this.SaveImageText,log);
-            saveNum += 1;
-            this.SaveNumberText_TextChanged(sender, e);
 
         }
 
         private void SaveImageText_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent("UniformResourceLocator") || e.Data.GetDataPresent("UniformResourceLocatorW"))
+            if (this.ModeSelectComboBox.Text == "ダウンロード")
             {
-                e.Effect = DragDropEffects.Copy;
+                if (e.Data.GetDataPresent("UniformResourceLocator") || e.Data.GetDataPresent("UniformResourceLocatorW"))//URIの場合
+                {
+                    e.Effect = DragDropEffects.Copy;
+                }
             }
         }
 
+        //ログ初期化
         private void LogResetButton_Click(object sender, EventArgs e)
         {
             this.SaveImageText.Text = "";
+
+        }
+
+        private void ModeSelectComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(this.ModeSelectComboBox.Text == "キャプチャ")
+            {
+
+            }
 
         }
     }
