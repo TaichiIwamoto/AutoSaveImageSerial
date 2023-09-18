@@ -20,6 +20,7 @@ namespace AutoSaveImageSerial
         private string accept;
         private string[] uriCache = new string[2];
         private CaptureFrame captureFrameForm;
+        public static bool isDownloaded;
         public static int saveNum = 0;
         public static string saveTitle;
         public static string saveDirPass;
@@ -173,8 +174,11 @@ namespace AutoSaveImageSerial
                     return;
                 }
                 await SaveImage.saveImage(uri, saveDirPass, saveTitle, referer, accept, this.SaveImageText, log);
-                saveNum += 1;
-                this.SaveNumberText_TextChanged(sender, e);
+                if (isDownloaded == true)
+                {
+                    saveNum += 1;
+                    this.SaveNumberText_TextChanged(sender, e);
+                }
             }
 
         }

@@ -62,7 +62,7 @@ namespace AutoSaveImageSerial
                 DisplayLog.displayTextLog(mainForm.SaveImageText, "保存先ディレクトリと保存タイトルを入力してください", MainForm.log);
                 return;
             }
-            Rectangle captureRect = new Rectangle(this.Location.X, this.Location.Y, this.Width, this.Height);
+            Rectangle captureRect = new Rectangle(this.Location.X+10, this.Location.Y+31, this.Width-20, this.Height-62);
             this.Visible = false;//キャプチャする際にコントロールが映るの防ぐ
 
             using (Bitmap bitmap = new Bitmap(captureRect.Width, captureRect.Height))
@@ -73,6 +73,7 @@ namespace AutoSaveImageSerial
                 }
 
                 bitmap.Save(dirPath+"/"+ saveTitle+tmpNum+".png", ImageFormat.Png);
+                DisplayLog.displayTextLog(mainForm.SaveImageText, "キャプチャ画像を" + dirPath + "/" + saveTitle + tmpNum + ".png" + "として保存しました",MainForm.log);
             }
 
 

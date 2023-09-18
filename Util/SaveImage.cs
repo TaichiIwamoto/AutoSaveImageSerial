@@ -25,6 +25,7 @@ namespace AutoSaveImageSerial.Util
                 Console.WriteLine("download failed");
                 Console.WriteLine(response.StatusCode.ToString());
                 DisplayLog.displayTextLog(saveImageText, "このサイトからは画像をダウンロードできません.", log);
+                MainForm.isDownloaded = false;
                 return;
             };
 
@@ -34,6 +35,7 @@ namespace AutoSaveImageSerial.Util
             FileStream outStream = File.Create(downloadPass);
             stream.CopyTo(outStream);
             DisplayLog.displayTextLog(saveImageText, uri + "を" + downloadPass + "に保存しました",log);
+            MainForm.isDownloaded = true;
             stream.Dispose();
             outStream.Dispose();
             
