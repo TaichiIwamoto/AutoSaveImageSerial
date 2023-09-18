@@ -1,4 +1,4 @@
-# AutoSaveImageSerial(画像連番保存ツールver1.0.0)
+# AutoSaveImageSerial(画像連番保存ツールver2.0.0)
 このアプリケーションは画像をサイトからダウンロードする際に、ユーザが設定した名前且つ連番で保存することが出来ます。<br>
 
 <h1>使用方法</h1>
@@ -44,8 +44,25 @@ Test00.jpg,Test01.jpg,Test02.jpg ,,,,Test12.jpg<br><br>
 
 <h2>キャプチャモード</h2>
 
-![image](https://github.com/TaichiIwamoto/AutoSaveImageSerial/assets/131168152/76185beb-4cf9-44ce-b1c1-45649021ca90)
+![UniConverter 14_20230918215055](https://github.com/TaichiIwamoto/AutoSaveImageSerial/assets/131168152/711f1ce5-b2be-4c3d-8b0c-261f8aad8a51)
 
+<ol>
+  <li>
+    モード選択で"キャプチャー"を選択
+  </li>
+  <li>
+    保存先ディレクトリやタイトル名はダウンロードモードと同じです。
+  </li>
+  <li>
+    "フレーム表示"ボタンをクリックすると、キャプチャー用のフォームが表示されます。
+  </li>
+    <li>
+    キャプチャーフォームはキャプションバー(フォーム上部のCaptureFrameと書かれてるとこ)を右クリックし、サイズ変更(S)でウィンドウサイズを変更できます。
+  </li>
+  <li>
+      "capture"ボタンを押すこと保存先ディレクトリにキャプチャ画像が保存されます。
+  </li>
+</ol>
 
 <h1>今後のアップデート</h1>
 <ul>
@@ -55,7 +72,7 @@ Test00.jpg,Test01.jpg,Test02.jpg ,,,,Test12.jpg<br><br>
 </ul>
 
 <b>ダウンロードはこちらから<br>
-https://github.com/TaichiIwamoto/AutoSaveImageSerial/releases/tag/v1.0.0
+https://github.com/TaichiIwamoto/AutoSaveImageSerial/releases/tag/v2.0.0
 
 
 
