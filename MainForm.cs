@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Drawing;
 using AutoSaveImageSerial.Util;
 using static System.Net.WebRequestMethods;
 
@@ -18,18 +18,26 @@ namespace AutoSaveImageSerial
     {
         private string referer;
         private string accept;
-        private string saveDirPass;
-        private int saveNum = 0;
         private string[] uriCache = new string[2];
-        public List<string> log = new List<string>();
-
+        private CaptureFrame captureFrameForm;
+        public static int saveNum = 0;
+        public static string saveTitle;
+        public static string saveDirPass;
+        public static List<string> log = new List<string>();
+        public static bool capturing = false;
         public MainForm()
         {
             InitializeComponent();
             this.ModeSelectComboBox.Text = this.ModeSelectComboBox.Items[0].ToString();//モード選択初期化=ダウンロード
             this.SelectSiteDropDown.Text = this.SelectSiteDropDown.Items[2].ToString();//サイト選択初期化=その他
+            Console.WriteLine(this.Controls.Count);
         }
 
+        public bool IsTopMost
+        {
+            get { return this.TopMost; }
+            set { this.TopMost = value; }
+        }
         private void MainForm_Load(object sender, EventArgs e)
         {
 
@@ -93,6 +101,7 @@ namespace AutoSaveImageSerial
             SaveNumberText.Text = tmpNum;
         }
 
+
         //連番リセット
         private void ResetSaveNum_Click(object sender, EventArgs e)
         {
@@ -110,7 +119,7 @@ namespace AutoSaveImageSerial
         {
             bool nullError = false; //保存先dir又はタイトル未入力かどうか
             string uri = e.Data.GetData(DataFormats.Text).ToString();//画像のURI
-            string saveTitle = SaveTitleText.Text + SaveNumberText.Text;//保存タイトル(連番付き)
+            saveTitle = SaveTitleText.Text + SaveNumberText.Text;//保存タイトル(連番付き)
             //重複判定
             {
                 if (saveNum == 0)
@@ -190,11 +199,37 @@ namespace AutoSaveImageSerial
 
         private void ModeSelectComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(this.ModeSelectComboBox.Text == "キャプチャ")
+            if (this.ModeSelectComboBox.Text == "キャプチャ")
             {
-
+                this.CaptureFrameButton.Visible = true;
+            }
+            else
+            {
+                this.CaptureFrameButton.Visible = false;
             }
 
         }
+
+        private void CaptureFrameButton_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("CaptureFrameClicked");
+
+            if (capturing == false)
+            {
+                saveTitle = SaveTitleText.Text;
+                this.TopMost = false;
+                capturing = true;
+                Console.WriteLine(capturing);
+                captureFrameForm = new CaptureFrame(this);
+                captureFrameForm.Show();
+            }
+        }
+
+
+
+
+
+
+
     }
 }

@@ -40,6 +40,8 @@
             this.LogResetButton = new System.Windows.Forms.Button();
             this.ModeSelectComboBox = new System.Windows.Forms.ComboBox();
             this.ModeSelectLabel = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.CaptureFrameButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // SaveDirText
@@ -166,6 +168,17 @@
             this.ModeSelectLabel.TabIndex = 13;
             this.ModeSelectLabel.Text = "モード選択";
             // 
+            // CaptureFrameButton
+            // 
+            this.CaptureFrameButton.Location = new System.Drawing.Point(170, 63);
+            this.CaptureFrameButton.Name = "CaptureFrameButton";
+            this.CaptureFrameButton.Size = new System.Drawing.Size(75, 20);
+            this.CaptureFrameButton.TabIndex = 14;
+            this.CaptureFrameButton.Text = "フレーム表示";
+            this.CaptureFrameButton.UseVisualStyleBackColor = true;
+            this.CaptureFrameButton.Visible = false;
+            this.CaptureFrameButton.Click += new System.EventHandler(this.CaptureFrameButton_Click);
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -173,6 +186,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(704, 441);
+            this.Controls.Add(this.CaptureFrameButton);
             this.Controls.Add(this.ModeSelectLabel);
             this.Controls.Add(this.ModeSelectComboBox);
             this.Controls.Add(this.LogResetButton);
@@ -185,6 +199,8 @@
             this.Controls.Add(this.SaveTitleText);
             this.Controls.Add(this.SaveDirButton);
             this.Controls.Add(this.SaveDirText);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(720, 480);
             this.MinimumSize = new System.Drawing.Size(720, 480);
             this.Name = "MainForm";
@@ -197,19 +213,20 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox SaveDirText;
         private System.Windows.Forms.Button SaveDirButton;
-        private System.Windows.Forms.TextBox SaveTitleText;
         private System.Windows.Forms.Label SaveTitleDescription;
         private System.Windows.Forms.ComboBox SelectSiteDropDown;
-        private System.Windows.Forms.TextBox SaveNumberText;
         private System.Windows.Forms.Label SaveNumberDescription;
         private System.Windows.Forms.Button ResetSaveNum;
-        private System.Windows.Forms.TextBox SaveImageText;
         private System.Windows.Forms.Button LogResetButton;
         private System.Windows.Forms.ComboBox ModeSelectComboBox;
         private System.Windows.Forms.Label ModeSelectLabel;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.Button CaptureFrameButton;
+        internal System.Windows.Forms.TextBox SaveNumberText;
+        internal System.Windows.Forms.TextBox SaveImageText;
+        internal System.Windows.Forms.TextBox SaveDirText;
+        internal System.Windows.Forms.TextBox SaveTitleText;
     }
 }
 
