@@ -1,4 +1,4 @@
-# AutoSaveImageSerial(画像連番保存ツールver2.0.0)
+# AutoSaveImageSerial(画像連番保存ツールver3.0.0)
 このアプリケーションは画像をサイトからダウンロードする際に、ユーザが設定した名前且つ連番で保存することが出来ます。<br>
 
 <h1>使用方法</h1>
@@ -64,15 +64,11 @@ Test00.jpg,Test01.jpg,Test02.jpg ,,,,Test12.jpg<br><br>
   </li>
 </ol>
 
-<h1>今後のアップデート</h1>
-<ul>
-  <li>
-    エクスプローラー内でも連番でリネームできる機能の追加
-  </li>
-</ul>
-
+<h2>エクスプローラモード</h2>
+更新中<br>
+<hr>
 <b>ダウンロードはこちらから<br>
-https://github.com/TaichiIwamoto/AutoSaveImageSerial/releases/tag/v2.0.0
+https://github.com/TaichiIwamoto/AutoSaveImageSerial/releases/tag/v3.0.0
 
 
 
