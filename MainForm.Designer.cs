@@ -152,7 +152,8 @@
             this.ModeSelectComboBox.FormattingEnabled = true;
             this.ModeSelectComboBox.Items.AddRange(new object[] {
             "ダウンロード",
-            "キャプチャ"});
+            "キャプチャ",
+            "エクスプローラー"});
             this.ModeSelectComboBox.Location = new System.Drawing.Point(13, 63);
             this.ModeSelectComboBox.Name = "ModeSelectComboBox";
             this.ModeSelectComboBox.Size = new System.Drawing.Size(87, 20);

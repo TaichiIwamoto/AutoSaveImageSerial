@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // アセンブリに関する一般的な情報は、次の方法で制御されます
 // 制御されます。アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更します。
-[assembly: AssemblyTitle("AutoSaveImageSerial")]
+[assembly: AssemblyTitle("画像連番保存ツール")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AutoSaveImageSerial")]
-[assembly: AssemblyCopyright("Copyright ©  2023")]
+[assembly: AssemblyCompany("個人")]
+[assembly: AssemblyProduct("画像連番保存ツール")]
+[assembly: AssemblyCopyright("画像連番保存ツール © Taichi Iwamoto 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

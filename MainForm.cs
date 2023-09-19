@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using AutoSaveImageSerial.Util;
 using static System.Net.WebRequestMethods;
+using System.IO;
 
 namespace AutoSaveImageSerial
 {
@@ -20,6 +21,7 @@ namespace AutoSaveImageSerial
         private string accept;
         private string[] uriCache = new string[2];
         private CaptureFrame captureFrameForm;
+        private Int16 modeSelect;
         public static bool isDownloaded;
         public static int saveNum = 0;
         public static string saveTitle;
@@ -51,7 +53,7 @@ namespace AutoSaveImageSerial
         //ディレクトリ選択
         private void SaveDirButton_Click(object sender, EventArgs e)
         {
-            saveDirPass = Directory.getSaveDirectory();
+            saveDirPass = Util.Directory.getSaveDirectory();
             SaveDirText.Text = saveDirPass;
         }
 
@@ -118,78 +120,126 @@ namespace AutoSaveImageSerial
         //画像保存
         private async void SaveImageText_DragDrop(object sender, DragEventArgs e)
         {
-            bool nullError = false; //保存先dir又はタイトル未入力かどうか
-            string uri = e.Data.GetData(DataFormats.Text).ToString();//画像のURI
-            saveTitle = SaveTitleText.Text + SaveNumberText.Text;//保存タイトル(連番付き)
-            //重複判定
+            if (modeSelect == 0)//ダウンロードモード
             {
-                if (saveNum == 0)
+                bool nullError = false; //保存先dir又はタイトル未入力かどうか
+                string uri = e.Data.GetData(DataFormats.Text).ToString();//画像のURI
+                saveTitle = SaveTitleText.Text + SaveNumberText.Text;//保存タイトル(連番付き)
+                                                                     //重複判定
                 {
-                    uriCache[0] = uri;
-                }
-                else if (saveNum == 1)
-                {
-                    uriCache[1] = uri;
-                    if (uriCache[0] == uriCache[1])
+                    if (saveNum == 0)
                     {
+                        uriCache[0] = uri;
+                    }
+                    else if (saveNum == 1)
+                    {
+                        uriCache[1] = uri;
+                        if (uriCache[0] == uriCache[1])
+                        {
 
-                        DialogResult result = MessageBox.Show(this, "前回保存した画像と同じですが続行しますか?", "重複通知", MessageBoxButtons.YesNo);
-                        if (result == DialogResult.No)
+                            DialogResult result = MessageBox.Show(this, "前回保存した画像と同じですが続行しますか?", "重複通知", MessageBoxButtons.YesNo);
+                            if (result == DialogResult.No)
+                            {
+                                return;
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        uriCache[0] = uriCache[1];
+                        uriCache[1] = uri;
+                        if (uriCache[0] == uriCache[1])
+                        {
+
+                            DialogResult result = MessageBox.Show(this, "前回保存した画像と同じですが続行しますか?", "重複通知", MessageBoxButtons.YesNo);
+                            if (result == DialogResult.No)
+                            {
+                                return;
+                            }
+                        }
+                    }
+                }
+                ////
+                //画像保存
+                {
+                    if (saveDirPass == null)
+                    {
+                        DisplayLog.displayTextLog(this.SaveImageText, "保存先を選択してください", log);
+                        nullError = true;
+                    }
+                    if (SaveTitleText.Text == "")
+                    {
+                        DisplayLog.displayTextLog(this.SaveImageText, "タイトルを入力してください.", log);
+                        nullError = true;
+                    }
+                    if (nullError == true)
+                    {
+                        return;
+                    }
+                    await SaveImage.saveImage(uri, saveDirPass, saveTitle, referer, accept, this.SaveImageText, log);
+                    if (isDownloaded == true)
+                    {
+                        saveNum += 1;
+                        this.SaveNumberText_TextChanged(sender, e);
+                    }
+                }
+            }else if(modeSelect == 1)//エクスプローラモード
+            {
+                string[] data = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+                foreach(string tmp in data)
+                {
+                    if (!System.IO.File.Exists(tmp))
+                    {
+                        DisplayLog.displayTextLog(SaveImageText, "フォルダーはサポートされていません", log);
+                        return;
+                    }
+                    else
+                    {
+                        bool nullError = false; //保存先dir又はタイトル未入力かどうか
+
+                        if (saveDirPass == null)
+                        {
+                            DisplayLog.displayTextLog(this.SaveImageText, "保存先を選択してください", log);
+                            nullError = true;
+                        }
+                        if (SaveTitleText.Text == "")
+                        {
+                            DisplayLog.displayTextLog(this.SaveImageText, "タイトルを入力してください.", log);
+                            nullError = true;
+                        }
+                        if (nullError == true)
                         {
                             return;
                         }
-                    }
+                        string extension = Path.GetExtension(tmp);
 
-                }
-                else
-                {
-                    uriCache[0] = uriCache[1];
-                    uriCache[1] = uri;
-                    if (uriCache[0] == uriCache[1])
-                    {
-
-                        DialogResult result = MessageBox.Show(this, "前回保存した画像と同じですが続行しますか?", "重複通知", MessageBoxButtons.YesNo);
-                        if (result == DialogResult.No)
-                        {
-                            return;
-                        }
+                        System.IO.File.Move(tmp, saveDirPass+"/"+SaveTitleText.Text+SaveNumberText.Text+extension);
+                        DisplayLog.displayTextLog(SaveImageText, tmp + "を" + saveDirPass + "/" + SaveTitleText.Text + SaveNumberText.Text + extension + "として保存しました", log);
+                        saveNum += 1;
+                        this.SaveNumberText_TextChanged(sender , e);
                     }
                 }
-            }
-            ////
-            //画像保存
-            {
-                if (saveDirPass == null)
-                {
-                    DisplayLog.displayTextLog(this.SaveImageText, "保存先を選択してください", log);
-                    nullError = true;
-                }
-                if (SaveTitleText.Text == "")
-                {
-                    DisplayLog.displayTextLog(this.SaveImageText, "タイトルを入力してください.", log);
-                    nullError = true;
-                }
-                if (nullError == true)
-                {
-                    return;
-                }
-                await SaveImage.saveImage(uri, saveDirPass, saveTitle, referer, accept, this.SaveImageText, log);
-                if (isDownloaded == true)
-                {
-                    saveNum += 1;
-                    this.SaveNumberText_TextChanged(sender, e);
-                }
+         
             }
 
         }
-
         private void SaveImageText_DragEnter(object sender, DragEventArgs e)
         {
             if (this.ModeSelectComboBox.Text == "ダウンロード")
             {
+                modeSelect = 0;
                 if (e.Data.GetDataPresent("UniformResourceLocator") || e.Data.GetDataPresent("UniformResourceLocatorW"))//URIの場合
                 {
                     e.Effect = DragDropEffects.Copy;
+                }
+            }
+            else if (this.ModeSelectComboBox.Text == "エクスプローラー")
+            {
+                modeSelect = 1;
+                if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                {
+                    e.Effect = DragDropEffects.Move;
                 }
             }
         }
